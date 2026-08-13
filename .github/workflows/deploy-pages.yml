@@ -32,7 +32,10 @@ jobs:
           ENV: production
           BASE_PATH: /linktree
           SITE_URL: https://playercontabilidade.github.io/linktree
-        run: node scripts/generate-config.js
+        run: |
+          node scripts/generate-config.js
+          grep -q '"BASE_PATH": "/linktree"' shared/js/config.js
+          grep -q '"ENV": "production"' shared/js/config.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
