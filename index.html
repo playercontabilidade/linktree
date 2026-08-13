@@ -4,19 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Linktree — Grupo Player</title>
-    <script src="shared/js/config.js"></script>
     <script>
       (function () {
-        // Relativo: evita /home/ na raiz do domínio quando BASE_PATH está vazio
-        window.location.replace("home/");
+        var path = location.pathname;
+        // /linktree (sem barra) faz URLs relativas caírem na raiz do domínio
+        if (!/\/$/.test(path) && !/\.html?$/i.test(path)) {
+          location.replace(path + "/" + location.search + location.hash);
+          return;
+        }
+        path = path.replace(/\/index\.html?$/i, "").replace(/\/$/, "");
+        path = path.replace(/\/(home|companies)(\/.*)?$/i, "");
+        location.replace(path + "/home/");
       })();
     </script>
-    <meta http-equiv="refresh" content="0;url=home/" />
   </head>
   <body>
     <p>
       Redirecionando para
-      <a href="home/">Player Contabilidade</a>…
+      <a href="home/">home</a>…
     </p>
   </body>
 </html>

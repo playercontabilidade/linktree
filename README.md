@@ -61,11 +61,13 @@ O deploy é automático via [`.github/workflows/deploy-pages.yml`](.github/workf
 
 ### Publicar mudanças
 
-1. Faça merge (ou push) das alterações em `main`
-2. Acompanhe em **Actions → Deploy GitHub Pages**
-3. Abra https://playercontabilidade.github.io/linktree
+1. Push em `main` (ou `feat/player-linktree`) — o workflow gera o `config.js` de produção
+2. Acompanhe em **Actions → Deploy GitHub Pages** (deve aparecer o job verde)
+3. Abra https://playercontabilidade.github.io/linktree/ (com `/` no final)
 
 Se o nome do repositório ou a URL do Pages mudar, atualize `BASE_PATH` e `SITE_URL` no workflow e no `.env.example`.
+
+**404 em `/home/`:** em geral o Pages está em “Deploy from a branch” (sobe o `config.js` local sem `/linktree`) ou a URL foi aberta sem a barra final. Use **Source = GitHub Actions** e a URL com `/linktree/`.
 
 ## Nova empresa
 
