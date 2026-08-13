@@ -1,0 +1,8 @@
+{
+  "name": "linktree-grupo-player",
+  "private": true,
+  "scripts": {
+    "config": "node scripts/generate-config.js",
+    "prestart": "npm run config"
+  }
+}
