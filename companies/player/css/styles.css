@@ -150,36 +150,35 @@ body {
 }
 
 .link:nth-child(1) .link__icon,
-.link:nth-child(2) .link__icon,
-.link:nth-child(4) .link__icon {
+.link:nth-child(3) .link__icon {
   color: #25d366; /* WhatsApp */
 }
 
-.link:nth-child(3) .link__icon {
+.link:nth-child(2) .link__icon {
   color: #090821; /* Vagas */
 }
 
-.link:nth-child(5) .link__icon {
+.link:nth-child(4) .link__icon {
   color: #ff0000; /* YouTube */
 }
 
-.link:nth-child(6) .link__icon {
+.link:nth-child(5) .link__icon {
   color: #1db954; /* Spotify */
 }
 
-.link:nth-child(7) .link__icon {
+.link:nth-child(6) .link__icon {
   color: #090821; /* Site */
 }
 
-.link:nth-child(8) .link__icon {
+.link:nth-child(7) .link__icon {
   color: #e4405f; /* Instagram / Xdose */
 }
 
-.link:nth-child(9) .link__icon {
+.link:nth-child(8) .link__icon {
   color: #2563eb; /* Ponto / relógio */
 }
 
-.link:nth-child(10) .link__icon {
+.link:nth-child(9) .link__icon {
   color: #0ea5e9; /* VCI / sistema */
 }
 
@@ -209,9 +208,6 @@ body {
 }
 .link:nth-child(9) {
   animation-delay: 0.37s;
-}
-.link:nth-child(10) {
-  animation-delay: 0.41s;
 }
 
 .link:hover,
