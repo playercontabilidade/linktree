@@ -248,12 +248,12 @@ body {
   animation: rise 0.6s ease-out 0.45s both;
 }
 
-.footer p {
-  margin: 0;
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 240, 152);
+.footer__logo {
+  display: block;
+  width: min(100%, 140px);
+  height: auto;
+  margin: 0.5rem auto 0;
+  opacity: 0.9;
 }
 
 @keyframes rise {
