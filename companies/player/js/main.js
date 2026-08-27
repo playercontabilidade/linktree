@@ -7,25 +7,22 @@
 
   document.documentElement.dataset.env = config.ENV || "development";
 
-  var links = document.querySelectorAll(".link");
+  var year = document.querySelector("[data-year]");
+  if (year) {
+    year.textContent = String(new Date().getFullYear());
+  }
 
-  links.forEach(function (link) {
-    link.addEventListener("pointerdown", function () {
-      link.classList.add("is-pressed");
-    });
+  if (config.ENV !== "development") return;
 
-    link.addEventListener("pointerup", function () {
-      link.classList.remove("is-pressed");
-    });
-
-    link.addEventListener("pointerleave", function () {
-      link.classList.remove("is-pressed");
-    });
-
+  document.querySelectorAll(".link").forEach(function (link) {
     link.addEventListener("click", function () {
-      if (config.ENV === "development") {
-        console.info("[linktree]", link.textContent.trim(), "→", link.href);
-      }
+      var label = link.querySelector(".link__label");
+      console.info(
+        "[linktree]",
+        label ? label.textContent.trim() : link.href,
+        "→",
+        link.href
+      );
     });
   });
 })();

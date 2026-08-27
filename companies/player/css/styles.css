@@ -1,12 +1,40 @@
+/* ==========================================================================
+   Player Contabilidade — página de links
+   Sistema visual derivado de playercontabilidade.com:
+   fundo navy/preto, âmbar #FFAA00 → #F88805, texto creme, Inter apertada.
+   ========================================================================== */
+
 :root {
-  --bg: #2a2a2a;
-  --text: #ffffff;
-  --accent: #cd9d5d;
-  --accent-soft: #fff098;
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Outfit", "Segoe UI", sans-serif;
-  --radius: 12px;
-  --max: 28rem;
+  /* Superfícies */
+  --ink: #05070f;
+  --navy-900: #08122b;
+  --navy-700: #10204a;
+  --navy-500: #1a2b5c; /* seção institucional do site */
+
+  /* Marca */
+  --amber: #ffaa00;
+  --amber-deep: #f88805;
+  --amber-dark: #925003;
+  --on-amber: #10100a;
+
+  /* Texto */
+  --cream: #ffdbbf;
+  --cream-dim: rgba(254, 215, 170, 0.7);
+  --cream-mute: rgba(254, 215, 170, 0.66); /* mínimo para AA em 12px */
+  --cream-faint: rgba(254, 215, 170, 0.42); /* só para elementos decorativos */
+
+  /* Vidro */
+  --glass: rgba(255, 255, 255, 0.045);
+  --glass-hi: rgba(255, 255, 255, 0.08);
+  --hairline: rgba(255, 255, 255, 0.12);
+
+  --font: "Inter", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+
+  --r-card: 18px;
+  --r-pill: 999px;
+  --shell: 30rem;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 *,
@@ -16,250 +44,357 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
   margin: 0;
-  min-height: 100vh;
-  font-family: var(--font-body);
-  color: var(--text);
-  background: var(--bg);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font);
+  font-size: 16px;
   line-height: 1.45;
+  color: var(--cream);
+  background: var(--ink);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.atmosphere {
+/* --------------------------------------------------------------------------
+   Fundo — substitui os PNGs de 1,6 MB por gradientes puros
+   -------------------------------------------------------------------------- */
+
+.backdrop {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-color: var(--bg);
-  background-image: url("../assets/background_branco.png");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  animation: atmosphere-shift 18s ease-in-out infinite alternate;
+  background:
+    radial-gradient(
+      90% 52% at 50% 0%,
+      rgba(255, 170, 0, 0.22) 0%,
+      rgba(248, 136, 5, 0.06) 38%,
+      transparent 68%
+    ),
+    radial-gradient(130% 85% at 50% 112%, rgba(26, 43, 92, 0.9) 0%, transparent 62%),
+    linear-gradient(180deg, var(--navy-900) 0%, var(--ink) 58%, var(--ink) 100%);
 }
 
-@keyframes atmosphere-shift {
+/* Halo que respira atrás da marca — o único movimento ambiente da página. */
+.backdrop::after {
+  content: "";
+  position: absolute;
+  top: -18vh;
+  left: 50%;
+  width: min(140vw, 46rem);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 170, 0, 0.16) 0%,
+    rgba(248, 136, 5, 0.05) 42%,
+    transparent 70%
+  );
+  filter: blur(20px);
+  animation: halo 14s ease-in-out infinite alternate;
+}
+
+@keyframes halo {
   from {
-    transform: scale(1);
-    filter: brightness(1);
+    transform: translateX(-50%) scale(0.94);
+    opacity: 0.75;
   }
   to {
-    transform: scale(1.04);
-    filter: brightness(1.06);
+    transform: translateX(-50%) scale(1.06);
+    opacity: 1;
   }
 }
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------------------------------------------------
+   Estrutura
+   -------------------------------------------------------------------------- */
 
 .shell {
   position: relative;
   z-index: 1;
-  width: min(100% - 2rem, var(--max));
-  margin: 0 auto;
-  padding: 2.5rem 0 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
+  width: min(100% - 2rem, var(--shell));
+  margin: auto;
+  padding-block: clamp(1.75rem, 5.5vh, 3.25rem);
+  display: grid;
+  gap: 1.6rem;
 }
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Marca
+   -------------------------------------------------------------------------- */
 
 .brand {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
   text-align: center;
-  animation: rise 0.7s ease-out both;
+  animation: rise 0.7s var(--ease) both;
 }
 
+/* logo_grupo_player_dark.svg é a variante para fundo escuro: o wordmark são
+   paths vetoriais recoloridos de #0e1c2c para branco; o símbolo mantém as
+   cores originais. Ver README para como regerar a partir do SVG claro. */
 .brand__logo {
-  display: block;
-  width: min(100%, 220px);
+  width: min(70%, 224px);
   height: auto;
-  margin: 0 auto 1rem;
-}
-
-@media (min-width: 768px) {
-  .brand__logo {
-    width: min(100%, 300px);
-  }
+  filter: drop-shadow(0 0 28px rgba(255, 170, 0, 0.18));
 }
 
 .brand__tagline {
   margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-  font-weight: 600;
-  color: var(--accent-soft);
-  letter-spacing: 0.02em;
+  max-width: 25ch;
+  font-size: 0.9rem;
+  font-weight: 450;
+  letter-spacing: -0.005em;
+  color: var(--cream-dim);
+  text-wrap: balance;
 }
 
+/* --------------------------------------------------------------------------
+   Links
+   -------------------------------------------------------------------------- */
+
 .links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.links__social {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
 }
 
 .link {
   position: relative;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  padding: 1.05rem 1.35rem;
-  text-align: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--r-card);
   text-decoration: none;
-  color: #090821;
-  font-weight: 600;
-  font-size: calc(0.95rem + 5px);
-  letter-spacing: 0.015em;
-  background: linear-gradient(105deg, #fff098 0%, #cd9d5d 100%);
-  border: 1px solid rgba(160, 112, 50, 0.35);
-  border-radius: var(--radius);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -1px 0 rgba(120, 80, 30, 0.18),
-    0 6px 18px rgba(0, 0, 0, 0.28);
+  color: var(--cream);
+  border: 1px solid var(--hairline);
+  animation: rise 0.6s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 140ms);
   transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    filter 0.22s ease;
-  animation: rise 0.55s ease-out both;
-  overflow: hidden;
+    transform 0.35s var(--ease),
+    background-color 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
 }
 
-.link::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0) 42%
-  );
-  pointer-events: none;
+.link--compact {
+  grid-template-columns: auto auto;
+  justify-content: center;
+  gap: 0.55rem;
+  padding-inline: 0.7rem;
 }
 
-.link > * {
-  position: relative;
-  z-index: 1;
+.link__badge {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--r-pill);
+  background: var(--glass-hi);
+  border: 1px solid var(--hairline);
+}
+
+.link--compact .link__badge {
+  width: 1.9rem;
+  height: 1.9rem;
+  background: none;
+  border: 0;
 }
 
 .link__icon {
-  flex-shrink: 0;
-  width: 1.35rem;
-  height: 1.35rem;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
-.link:nth-child(1) .link__icon,
-.link:nth-child(3) .link__icon {
-  color: #25d366; /* WhatsApp */
+.link--compact .link__icon {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
-.link:nth-child(2) .link__icon {
-  color: #090821; /* Vagas */
+.link__label {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+  text-wrap: pretty;
 }
 
-.link:nth-child(4) .link__icon {
-  color: #ff0000; /* YouTube */
+.link__meta {
+  display: block;
+  margin-top: 0.12rem;
+  font-size: 0.74rem;
+  font-weight: 450;
+  line-height: 1.3;
+  color: var(--cream-mute);
 }
 
-.link:nth-child(5) .link__icon {
-  color: #1db954; /* Spotify */
+.link__arrow {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--cream-faint);
+  transition:
+    transform 0.35s var(--ease),
+    color 0.35s var(--ease);
 }
 
-.link:nth-child(6) .link__icon {
-  color: #090821; /* Site */
+/* Variante em vidro — o padrão da lista */
+.link--glass {
+  background-color: var(--glass);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
 }
 
-.link:nth-child(7) .link__icon {
-  color: #e4405f; /* Instagram / Xdose */
-}
-
-.link:nth-child(8) .link__icon {
-  color: #2563eb; /* Ponto / relógio */
-}
-
-.link:nth-child(9) .link__icon {
-  color: #0ea5e9; /* VCI / sistema */
-}
-
-.link:nth-child(1) {
-  animation-delay: 0.05s;
-}
-.link:nth-child(2) {
-  animation-delay: 0.09s;
-}
-.link:nth-child(3) {
-  animation-delay: 0.13s;
-}
-.link:nth-child(4) {
-  animation-delay: 0.17s;
-}
-.link:nth-child(5) {
-  animation-delay: 0.21s;
-}
-.link:nth-child(6) {
-  animation-delay: 0.25s;
-}
-.link:nth-child(7) {
-  animation-delay: 0.29s;
-}
-.link:nth-child(8) {
-  animation-delay: 0.33s;
-}
-.link:nth-child(9) {
-  animation-delay: 0.37s;
-}
-
-.link:hover,
-.link:focus-visible {
-  transform: translateY(-3px);
-  filter: brightness(1.05);
+.link--glass:hover {
+  transform: translateY(-2px);
+  background-color: var(--glass-hi);
+  border-color: rgba(255, 170, 0, 0.38);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -1px 0 rgba(120, 80, 30, 0.15),
-    0 12px 28px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(255, 240, 152, 0.25);
-  outline: none;
+    0 16px 36px -20px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 170, 0, 0.1);
 }
 
-.link:focus-visible {
-  border-color: var(--accent-soft);
+.link--glass:hover .link__arrow {
+  transform: translateX(3px);
+  color: var(--amber);
+}
+
+/* Cores oficiais de cada plataforma, ligadas ao data-brand e não à posição */
+.link--glass[data-brand="whatsapp"] .link__icon {
+  color: #25d366;
+}
+.link--glass[data-brand="youtube"] .link__icon {
+  color: #ff0000;
+}
+.link--glass[data-brand="spotify"] .link__icon {
+  color: #1db954;
+}
+.link--glass[data-brand="vagas"] .link__icon,
+.link--glass[data-brand="site"] .link__icon {
+  color: var(--amber);
+}
+
+/* Variante principal — mesmo botão âmbar do site oficial */
+.link--primary {
+  color: var(--on-amber);
+  background-image: linear-gradient(100deg, var(--amber) 0%, var(--amber-deep) 100%);
+  border-color: rgba(255, 255, 255, 0.28);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 0 0 2px #1a1a1a,
-    0 0 0 4px var(--accent),
-    0 12px 28px rgba(0, 0, 0, 0.32);
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 12px 32px -12px rgba(248, 136, 5, 0.55);
+}
+
+.link--primary .link__badge {
+  background: rgba(0, 0, 0, 0.14);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.link--primary .link__icon,
+.link--primary .link__arrow {
+  color: var(--on-amber);
+}
+
+.link--primary .link__meta {
+  color: rgba(16, 16, 10, 0.78);
+}
+
+.link--primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 18px 44px -14px rgba(248, 136, 5, 0.62);
+}
+
+.link--primary:hover .link__arrow {
+  transform: translateX(3px);
 }
 
 .link:active {
-  transform: translateY(0);
-  filter: brightness(0.98);
-  box-shadow:
-    inset 0 2px 4px rgba(120, 80, 30, 0.25),
-    0 3px 10px rgba(0, 0, 0, 0.22);
+  transform: translateY(0) scale(0.994);
 }
 
-.link.is-pressed {
-  transform: scale(0.985);
+.link:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
 }
+
+/* --------------------------------------------------------------------------
+   Rodapé
+   -------------------------------------------------------------------------- */
 
 .footer {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
   text-align: center;
-  animation: rise 0.6s ease-out 0.45s both;
+  animation: rise 0.6s var(--ease) 0.55s both;
 }
 
-.footer__logo {
-  display: block;
-  width: min(100%, 140px);
-  height: auto;
-  margin: 0.5rem auto 0;
-  opacity: 0.9;
+.footer::before {
+  content: "";
+  width: 3.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hairline), transparent);
 }
+
+.footer__note {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+  color: var(--cream-mute);
+}
+
+/* --------------------------------------------------------------------------
+   Movimento
+   -------------------------------------------------------------------------- */
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -267,16 +402,37 @@ body {
   }
 }
 
+@media (min-width: 768px) {
+  .brand__logo {
+    width: min(70%, 260px);
+  }
+
+  .link {
+    padding: 0.95rem 1.1rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere,
+  .backdrop::after,
   .brand,
   .link,
   .footer {
     animation: none;
   }
 
-  .link:hover,
-  .link:focus-visible {
+  .link,
+  .link__arrow {
+    transition: none;
+  }
+
+  .link--glass:hover,
+  .link--primary:hover,
+  .link:active {
+    transform: none;
+  }
+
+  .link--glass:hover .link__arrow,
+  .link--primary:hover .link__arrow {
     transform: none;
   }
 }
