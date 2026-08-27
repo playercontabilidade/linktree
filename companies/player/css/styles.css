@@ -5,10 +5,11 @@
    ========================================================================== */
 
 :root {
-  /* Superfícies */
-  --ink: #05070f;
-  --navy-900: #08122b;
-  --navy-700: #10204a;
+  /* Superfícies — navy quente, menos contraste top→bottom. A ideia é evitar
+     o "fundo neon" de template: nada satura, nada anuncia. */
+  --ink: #060812;
+  --navy-950: #0a0e1d;
+  --navy-900: #101632;
   --navy-500: #1a2b5c; /* seção institucional do site */
 
   /* Marca */
@@ -34,7 +35,8 @@
   --r-pill: 999px;
   --shell: 30rem;
 
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1); /* entrada e queda — "punch" curto */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1); /* hover/idle — suave nas duas pontas */
 }
 
 *,
@@ -71,34 +73,39 @@ body {
   z-index: 0;
   pointer-events: none;
   background:
+    /* vinheta nas quatro pontas — dá bordas e evita a superfície plana */
     radial-gradient(
-      90% 52% at 50% 0%,
-      rgba(255, 170, 0, 0.22) 0%,
-      rgba(248, 136, 5, 0.06) 38%,
-      transparent 68%
+      150% 100% at 50% 50%,
+      transparent 45%,
+      rgba(0, 0, 0, 0.55) 100%
     ),
-    radial-gradient(130% 85% at 50% 112%, rgba(26, 43, 92, 0.9) 0%, transparent 62%),
-    linear-gradient(180deg, var(--navy-900) 0%, var(--ink) 58%, var(--ink) 100%);
+    /* base navy quente, transição bem gradual */
+    linear-gradient(
+      180deg,
+      var(--navy-900) 0%,
+      var(--navy-950) 45%,
+      var(--ink) 100%
+    );
 }
 
-/* Halo que respira atrás da marca — o único movimento ambiente da página. */
+/* Aura sob o logo — larga, difusa, opacidade discreta. Respira devagar. */
 .backdrop::after {
   content: "";
   position: absolute;
-  top: -18vh;
+  top: -22vh;
   left: 50%;
-  width: min(140vw, 46rem);
+  width: min(150vw, 52rem);
   aspect-ratio: 1;
   transform: translateX(-50%);
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 170, 0, 0.16) 0%,
-    rgba(248, 136, 5, 0.05) 42%,
-    transparent 70%
+    rgba(255, 190, 110, 0.09) 0%,
+    rgba(255, 170, 0, 0.03) 38%,
+    transparent 66%
   );
-  filter: blur(20px);
-  animation: halo 14s ease-in-out infinite alternate;
+  filter: blur(48px);
+  animation: halo 20s ease-in-out infinite alternate;
 }
 
 @keyframes halo {
@@ -112,14 +119,16 @@ body {
   }
 }
 
+/* Grain quente muito discreto — desfaz a sensação de tela pintada e evita
+   banding no gradiente. Blend "soft-light" mistura com a cor sem estourar. */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.85 0 0 0 0 0.7 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* --------------------------------------------------------------------------
@@ -131,9 +140,9 @@ body {
   z-index: 1;
   width: min(100% - 2rem, var(--shell));
   margin: auto;
-  padding-block: clamp(1.75rem, 5.5vh, 3.25rem);
+  padding-block: clamp(2rem, 7vh, 3.75rem);
   display: grid;
-  gap: 1.6rem;
+  gap: 2.25rem;
 }
 
 .sprite {
@@ -161,24 +170,28 @@ body {
 .brand {
   display: grid;
   justify-items: center;
-  gap: 0.85rem;
+  gap: 1.5rem;
   text-align: center;
   animation: rise 0.7s var(--ease) both;
 }
 
 /* logo_grupo_player_dark.svg é a variante para fundo escuro: o wordmark são
    paths vetoriais recoloridos de #0e1c2c para branco; o símbolo mantém as
-   cores originais. Ver README para como regerar a partir do SVG claro. */
+   cores originais. Ver README para como regerar a partir do SVG claro.
+   Dois drop-shadows: um halo âmbar largo (respiração) + queda vertical
+   discreta (aterra a marca sobre o fundo). */
 .brand__logo {
   width: min(70%, 224px);
   height: auto;
-  filter: drop-shadow(0 0 28px rgba(255, 170, 0, 0.18));
+  filter:
+    drop-shadow(0 0 40px rgba(255, 170, 0, 0.14))
+    drop-shadow(0 10px 30px rgba(0, 0, 0, 0.55));
 }
 
 /* Assinatura do site institucional — a única linha "cantada" da página,
    em Fraunces italic com gradiente âmbar. É o único uso de serifada aqui:
    toda a boldness da tipografia é gasta neste elemento, o resto continua
-   Inter e disciplinado. O background-position anima para dar o shimmer. */
+   Inter e disciplinado. */
 .brand__eyebrow {
   margin: 0;
   max-width: 18ch;
@@ -246,11 +259,12 @@ body {
   animation: rise 0.6s var(--ease) both;
   animation-delay: calc(var(--i, 0) * 55ms + 140ms);
   transition:
-    transform 0.35s var(--ease),
-    background-color 0.35s var(--ease),
-    border-color 0.35s var(--ease),
-    box-shadow 0.35s var(--ease);
+    transform 0.55s var(--ease-soft),
+    background-color 0.55s var(--ease-soft),
+    border-color 0.55s var(--ease-soft),
+    box-shadow 0.55s var(--ease-soft);
 }
+
 
 .link--compact {
   grid-template-columns: auto auto;
@@ -267,6 +281,15 @@ body {
   border-radius: var(--r-pill);
   background: var(--glass-hi);
   border: 1px solid var(--hairline);
+  transition:
+    transform 0.55s var(--ease-soft),
+    background-color 0.55s var(--ease-soft),
+    border-color 0.55s var(--ease-soft),
+    box-shadow 0.55s var(--ease-soft);
+}
+
+.link:hover .link__badge {
+  transform: scale(1.12);
 }
 
 .link--compact .link__badge {
@@ -309,80 +332,71 @@ body {
   height: 0.95rem;
   color: var(--cream-faint);
   transition:
-    transform 0.35s var(--ease),
-    color 0.35s var(--ease);
+    transform 0.55s var(--ease-soft),
+    color 0.55s var(--ease-soft);
 }
 
-/* Variante em vidro — o padrão da lista */
+/* Variante em vidro — o padrão da lista.
+   Idle: um highlight interno no topo dá volume sem sombra externa dura.
+   Hover: sombra mais profunda + kiss âmbar na borda superior. */
 .link--glass {
   background-color: var(--glass);
   -webkit-backdrop-filter: blur(14px) saturate(1.25);
   backdrop-filter: blur(14px) saturate(1.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 6px 18px -12px rgba(0, 0, 0, 0.7);
 }
 
+/* No hover o card levita: lift maior + micro-scale + brilho âmbar espalhado
+   ao redor. A curva ease-soft segura a maciez em toda a subida e descida. */
 .link--glass:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.015);
   background-color: var(--glass-hi);
-  border-color: rgba(255, 170, 0, 0.38);
+  border-color: rgba(255, 170, 0, 0.55);
   box-shadow:
-    0 16px 36px -20px rgba(0, 0, 0, 0.95),
-    0 0 0 1px rgba(255, 170, 0, 0.1);
+    inset 0 1px 0 rgba(255, 220, 160, 0.22),
+    0 30px 60px -20px rgba(0, 0, 0, 0.95),
+    0 12px 32px -8px rgba(255, 170, 0, 0.28),
+    0 0 0 1px rgba(255, 170, 0, 0.18);
 }
 
 .link--glass:hover .link__arrow {
-  transform: translateX(3px);
+  transform: translateX(6px);
   color: var(--amber);
 }
 
-/* Cores oficiais de cada plataforma, ligadas ao data-brand e não à posição */
-.link--glass[data-brand="whatsapp"] .link__icon {
-  color: #25d366;
+/* Cores oficiais de cada plataforma, ligadas ao data-brand e não à posição.
+   WhatsApp é o único badge preenchido — o verde da marca é a "imagem
+   do WhatsApp" que as pessoas reconhecem instantaneamente. */
+.link--glass[data-brand="whatsapp"] .link__badge {
+  background: #25d366;
+  border-color: rgba(37, 211, 102, 0.9);
+  box-shadow: 0 6px 16px -8px rgba(37, 211, 102, 0.55);
 }
+
+.link--glass[data-brand="whatsapp"]:hover .link__badge {
+  box-shadow:
+    0 10px 22px -6px rgba(37, 211, 102, 0.65),
+    0 0 0 4px rgba(37, 211, 102, 0.14);
+}
+
+.link--glass[data-brand="whatsapp"] .link__icon {
+  color: #ffffff;
+}
+
 .link--glass[data-brand="youtube"] .link__icon {
   color: #ff0000;
 }
+
 .link--glass[data-brand="spotify"] .link__icon {
   color: #1db954;
 }
+
 .link--glass[data-brand="vagas"] .link__icon,
 .link--glass[data-brand="site"] .link__icon,
 .link--glass[data-brand="location"] .link__icon {
   color: var(--amber);
-}
-
-/* Variante principal — mesmo botão âmbar do site oficial */
-.link--primary {
-  color: var(--on-amber);
-  background-image: linear-gradient(100deg, var(--amber) 0%, var(--amber-deep) 100%);
-  border-color: rgba(255, 255, 255, 0.28);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    0 12px 32px -12px rgba(248, 136, 5, 0.55);
-}
-
-.link--primary .link__badge {
-  background: rgba(0, 0, 0, 0.14);
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-.link--primary .link__icon,
-.link--primary .link__arrow {
-  color: var(--on-amber);
-}
-
-.link--primary .link__meta {
-  color: rgba(16, 16, 10, 0.78);
-}
-
-.link--primary:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 18px 44px -14px rgba(248, 136, 5, 0.62);
-}
-
-.link--primary:hover .link__arrow {
-  transform: translateX(3px);
 }
 
 .link:active {
@@ -448,7 +462,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .backdrop::after,
   .brand,
-  .brand__eyebrow,
   .link,
   .footer {
     animation: none;
@@ -460,13 +473,15 @@ body {
   }
 
   .link--glass:hover,
-  .link--primary:hover,
   .link:active {
     transform: none;
   }
 
-  .link--glass:hover .link__arrow,
-  .link--primary:hover .link__arrow {
+  .link--glass:hover .link__arrow {
+    transform: none;
+  }
+
+  .link:hover .link__badge {
     transform: none;
   }
 }
