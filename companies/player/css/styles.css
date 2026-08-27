@@ -175,14 +175,46 @@ body {
   filter: drop-shadow(0 0 28px rgba(255, 170, 0, 0.18));
 }
 
-.brand__tagline {
+/* Assinatura do site institucional — a única linha "cantada" da página,
+   em Fraunces italic com gradiente âmbar. É o único uso de serifada aqui:
+   toda a boldness da tipografia é gasta neste elemento, o resto continua
+   Inter e disciplinado. O background-position anima para dar o shimmer. */
+.brand__eyebrow {
   margin: 0;
-  max-width: 25ch;
-  font-size: 0.9rem;
-  font-weight: 450;
-  letter-spacing: -0.005em;
-  color: var(--cream-dim);
+  max-width: 18ch;
+  font-family: "Fraunces", "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-optical-sizing: auto;
+  font-size: clamp(1.55rem, 6vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.08;
+  background: linear-gradient(
+    100deg,
+    #ffe0a3 0%,
+    var(--amber) 35%,
+    #ffe0a3 55%,
+    var(--amber) 75%,
+    var(--amber-deep) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
   text-wrap: balance;
+  animation: shimmer 14s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -313,7 +345,8 @@ body {
   color: #1db954;
 }
 .link--glass[data-brand="vagas"] .link__icon,
-.link--glass[data-brand="site"] .link__icon {
+.link--glass[data-brand="site"] .link__icon,
+.link--glass[data-brand="location"] .link__icon {
   color: var(--amber);
 }
 
@@ -415,6 +448,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .backdrop::after,
   .brand,
+  .brand__eyebrow,
   .link,
   .footer {
     animation: none;
