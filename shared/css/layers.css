@@ -1,0 +1,6 @@
+/* Ordem de precedência da cascata para todas as páginas do Grupo.
+   Precisa ser a PRIMEIRA tag <link> do documento: folhas são aplicadas em
+   ordem de documento, e é essa posição que garante a declaração antes de
+   qualquer uso. Com a ordem fixada aqui, a ordem das demais folhas deixa de
+   importar para a precedência. */
+@layer reset, tokens, base, components, motion, utilities;
