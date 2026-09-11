@@ -17,7 +17,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check colour token contrast
+        run: node scripts/check-contrast.js
+
+      - name: Lighthouse budgets
+        run: npx --yes @lhci/cli@0.14.x autorun
+
   build:
+    needs: quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
