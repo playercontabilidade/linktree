@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "config": "node scripts/generate-config.js",
-    "prestart": "npm run config"
+    "prestart": "npm run config",
+    "start": "npx --yes serve --listen 5500 ."
   }
 }

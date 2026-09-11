@@ -1,0 +1,7 @@
+# shared/js/config.js é gerado por scripts/generate-config.js, que escreve LF.
+# Sem esta regra, core.autocrlf=true marca o arquivo como modificado no Windows
+# a cada `npm run config`, mesmo sem mudança de conteúdo.
+shared/js/config.js text eol=lf
+
+# Normaliza o resto do texto para LF no repositório.
+* text=auto eol=lf

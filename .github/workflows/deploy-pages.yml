@@ -5,6 +5,12 @@ on:
     branches:
       - main
       - feat/player-linktree
+  # Só o job `quality` roda aqui — build e deploy estão guardados por
+  # `if`, para um pull request nunca publicar no Pages.
+  pull_request:
+    branches:
+      - main
+      - feat/player-linktree
   workflow_dispatch:
 
 permissions:
@@ -13,11 +19,31 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Check colour token contrast
+        run: node scripts/check-contrast.js
+
+      - name: Lighthouse budgets
+        run: npx --yes @lhci/cli@0.14.x autorun
+
   build:
+    needs: quality
+    # Publicar é efeito de merge, não de proposta.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

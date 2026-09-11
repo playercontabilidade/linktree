@@ -5,3 +5,7 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
+.superpowers/
+scripts/fonts-src/
+scripts/.fonts-tmp/
+.lighthouseci/
