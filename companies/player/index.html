@@ -2,134 +2,314 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      // Aplica o tema antes da primeira pintura. Sem isto, o browser pinta o
+      // tema padrão e troca — o flash que o commit 91fd22a já corrigiu nos
+      // redirects. Mantenha inline e síncrono.
+      (function () {
+        var KEY = "player-theme";
+        window.__setTheme = function (name) {
+          var t = name === "light" || name === "dark" ? name : null;
+          if (t) {
+            document.documentElement.setAttribute("data-theme", t);
+            try { localStorage.setItem(KEY, t); } catch (e) {}
+          }
+          return t;
+        };
+        try {
+          var saved = localStorage.getItem(KEY);
+          if (saved === "light" || saved === "dark") {
+            document.documentElement.setAttribute("data-theme", saved);
+          }
+        } catch (e) {}
+        // Sem valor salvo, nenhum atributo é escrito e prefers-color-scheme decide.
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Player Contabilidade — Links</title>
     <meta
       name="description"
-      content="Links oficiais da Player Contabilidade"
+      content="Canais oficiais da Player Contabilidade: atendimento comercial, vagas, podcast, YouTube e site."
     />
-    <title>Player Contabilidade — Links</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="theme-color" content="#141a29" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f1ebe1" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Player Contabilidade" />
+    <meta property="og:title" content="Player Contabilidade — Links oficiais" />
+    <meta
+      property="og:description"
+      content="Fale com o comercial, veja as vagas em aberto e acompanhe nossos conteúdos."
+    />
+    <meta
+      property="og:url"
+      content="https://playercontabilidade.github.io/linktree/companies/player/"
+    />
+    <meta property="og:image" content="https://playercontabilidade.github.io/linktree/companies/player/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Player Contabilidade — Somos cientistas da riqueza e da prosperidade."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="assets/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="assets/favicon-180.png" />
+    <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Outfit:wght@400;500;600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="assets/fonts/fraunces-italic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
+    <link rel="stylesheet" href="../../shared/css/layers.css" />
+    <link rel="stylesheet" href="../../shared/css/tokens.css" />
+    <link rel="stylesheet" href="../../shared/css/base.css" />
+    <link rel="stylesheet" href="css/brand.css" />
     <link rel="stylesheet" href="css/styles.css" />
     <script src="../../shared/js/config.js"></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Player Contabilidade",
+        "url": "https://playercontabilidade.com",
+        "logo": "https://playercontabilidade.github.io/linktree/companies/player/assets/logo_player_on_dark.png",
+        "image": "https://playercontabilidade.github.io/linktree/companies/player/assets/og-image.png",
+        "areaServed": "Palmas, Tocantins, Brasil",
+        "sameAs": [
+          "https://www.youtube.com/@playercontabilidade",
+          "https://open.spotify.com/show/033DHcdDzl3xF7WrdSdjYD"
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div class="atmosphere" aria-hidden="true"></div>
+    <div class="backdrop" aria-hidden="true"></div>
+
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <!-- Glifo do Bootstrap Icons (MIT), https://icons.getbootstrap.com/icons/whatsapp/
+           Traço mais fino e parelho que o desenho anterior, e o rabinho da bolha
+           fecha melhor nos tamanhos pequenos em que ele é usado aqui. -->
+      <symbol id="i-whatsapp" viewBox="0 0 16 16">
+        <path fill="currentColor" d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+      </symbol>
+      <!-- O mesmo glifo em branco sobre o disco da marca. O verde entra por
+           currentColor, então continua vindo do token --brand-whatsapp; o branco
+           é literal porque é parte do desenho do logo, não do tema. -->
+      <symbol id="i-whatsapp-disco" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="12" fill="currentColor" />
+        <g transform="translate(4.8 4.8) scale(.9)">
+          <path fill="#ffffff" d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232" />
+        </g>
+      </symbol>
+      <symbol id="i-vagas" viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M10 2h4a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v3H3V7a2 2 0 0 1 2-2h3V4a2 2 0 0 1 2-2m0 3h4V4h-4zm-7 7h18v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+        />
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7m0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5"
+        />
+      </symbol>
+      <symbol id="i-youtube" viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.84.56 9.38.56 9.38.56s7.54 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8M9.75 15.02V8.98L15.5 12z"
+        />
+      </symbol>
+      <symbol id="i-spotify" viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.31-1.76-8.8-.96a.63.63 0 0 1-.28-1.22c3.82-.87 7.1-.5 9.73 1.11a.63.63 0 0 1 .21.86m1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.64-1.1 8.17-.57 11.24 1.32a.78.78 0 0 1 .25 1.08m.1-2.83C14.7 8.95 9.35 8.77 6.36 9.68a.94.94 0 0 1-.55-1.79c3.42-1.05 9.28-.85 12.94 1.32a.94.94 0 1 1-.98 1.6"
+        />
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 5l7 7-7 7"
+        />
+      </symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24">
+        <g
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+        >
+          <circle cx="12" cy="12" r="4.1" />
+          <path
+            d="M12 2.7v2.2M12 19.1v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.7 12h2.2M19.1 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"
+          />
+        </g>
+      </symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linejoin="round"
+          d="M20.4 14.5A8.6 8.6 0 0 1 9.5 3.6a8.6 8.6 0 1 0 10.9 10.9Z"
+        />
+      </symbol>
+    </svg>
 
     <main class="shell">
+            <button
+        class="theme-toggle"
+        type="button"
+        data-theme-toggle
+        aria-label="Alternar entre tema claro e escuro"
+      >
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+          <use href="#i-sun" />
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+          <use href="#i-moon" />
+        </svg>
+      </button>
+
       <header class="brand">
-        <img
-          class="brand__logo"
-          src="assets/logo_grupo_player.svg"
-          width="280"
-          height="80"
-          alt="Player Contabilidade"
-        />
+        <div class="brand__logo" role="img" aria-label="Player Contabilidade"></div>
+        <h1 class="brand__eyebrow">
+          Somos cientistas da riqueza e da prosperidade.
+        </h1>
       </header>
+
+      <a
+        class="link link--cta"
+        style="--i: 0"
+        data-brand="whatsapp"
+        href="https://api.whatsapp.com/send?phone=5511994453204"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span class="link__lead">
+          <svg class="link__icon" aria-hidden="true"><use href="#i-whatsapp" /></svg>
+          <span class="link__label">Falar com o comercial</span>
+        </span>
+        <svg class="link__arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+      </a>
 
       <nav class="links" aria-label="Links oficiais">
         <a
           class="link"
-          href="https://api.whatsapp.com/send?phone=5511994453204"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg class="link__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0 0 12.04 2m.01 1.67c4.52 0 8.24 3.72 8.24 8.24 0 4.52-3.72 8.24-8.24 8.24-1.45 0-2.84-.38-4.06-1.09l-.29-.17-3.12.82.83-3.04-.19-.31a8.2 8.2 0 0 1-1.26-4.45c0-4.52 3.72-8.24 8.09-8.24m4.52 11.66c-.24.67-1.39 1.28-1.92 1.36-.49.08-1.11.11-1.79-.11-.41-.14-.94-.31-1.62-.61-2.85-1.23-4.71-4.11-4.85-4.3-.14-.19-1.15-1.53-1.15-2.92s.73-2.08.99-2.36c.24-.28.54-.35.72-.35h.52c.17 0 .39-.06.61.47.24.58.81 2 .88 2.14.07.14.12.31.02.5-.1.19-.14.31-.28.48-.14.17-.29.37-.42.5-.14.14-.28.29-.12.56.16.28.7 1.15 1.5 1.86 1.03.92 1.9 1.2 2.17 1.34.28.14.43.12.59-.07.17-.19.7-.81.88-1.09.19-.28.37-.23.61-.14.24.1 1.54.73 1.8.86.28.14.45.21.52.32.07.12.07.67-.17 1.34"
-            />
-          </svg>
-          <span>Comercial Player</span>
-        </a>
-        <a
-          class="link"
+          style="--i: 1"
+          data-brand="vagas"
           href="https://vagas.playercontabilidade.com"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <svg class="link__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M10 2h4a2 2 0 0 1 2 2v1h3a2 2 0 0 1 2 2v3H3V7a2 2 0 0 1 2-2h3V4a2 2 0 0 1 2-2m0 3h4V4h-4zm-7 7h18v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-            />
-          </svg>
-          <span>Vagas de emprego em aberto</span>
+        <svg class="link__icon" aria-hidden="true"><use href="#i-vagas" /></svg>
+          <span>
+            <span class="link__label">Vagas de emprego em aberto</span>
+            <span class="link__meta">Trabalhe no Grupo Player</span>
+          </span>
+          <svg class="link__arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
         </a>
+
         <a
           class="link"
+          style="--i: 2"
+          data-brand="whatsapp-badge"
           href="https://chat.whatsapp.com/Kn5kvGsrDi13cBYZ4phVKT?s=cl&amp;p=i&amp;ilr=4"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <svg class="link__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3m-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3m0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13m8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5"
-            />
-          </svg>
-          <span>Grupo para empresários — reforma tributária</span>
+        <svg class="link__icon" aria-hidden="true"><use href="#i-whatsapp-disco" /></svg>
+          <span>
+            <span class="link__label">Grupo para empresários</span>
+            <span class="link__meta">Reforma tributária · WhatsApp</span>
+          </span>
+          <svg class="link__arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
         </a>
+
         <a
           class="link"
-          href="https://www.youtube.com/@playercontabilidade"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg class="link__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.54 3.5 12 3.5 12 3.5s-7.54 0-9.38.56A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.84.56 9.38.56 9.38.56s7.54 0 9.38-.56a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8M9.75 15.02V8.98L15.5 12z"
-            />
-          </svg>
-          <span>YouTube</span>
-        </a>
-        <a
-          class="link"
-          href="https://open.spotify.com/show/033DHcdDzl3xF7WrdSdjYD?si=dc77a074f5a6493a"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <svg class="link__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m4.59 14.43a.62.62 0 0 1-.86.21c-2.35-1.44-5.31-1.76-8.8-.96a.63.63 0 0 1-.28-1.22c3.82-.87 7.1-.5 9.73 1.11a.63.63 0 0 1 .21.86m1.22-2.72a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.64-1.1 8.17-.57 11.24 1.32a.78.78 0 0 1 .25 1.08m.1-2.83C14.7 8.95 9.35 8.77 6.36 9.68a.94.94 0 0 1-.55-1.79c3.42-1.05 9.28-.85 12.94 1.32a.94.94 0 1 1-.98 1.6"
-            />
-          </svg>
-          <span>Spotify</span>
-        </a>
-        <a
-          class="link"
+          style="--i: 3"
+          data-brand="site"
           href="https://playercontabilidade.com"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <svg class="link__icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              fill="currentColor"
-              d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20m6.93 6h-3.16a15.7 15.7 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8M12 4.03c.7.9 1.5 2.3 2.03 3.97h-4.06C10.5 6.33 11.3 4.93 12 4.03M4.26 14a8.1 8.1 0 0 1 0-4h3.64a16.9 16.9 0 0 0-.14 2c0 .68.05 1.35.14 2zm.81 2h3.16c.3 1.25.76 2.45 1.38 3.56A8.03 8.03 0 0 1 5.07 16M8.07 8H4.91a8.03 8.03 0 0 1 4.54-3.56A15.7 15.7 0 0 0 8.07 8m0 8c.3 1.25.76 2.45 1.38 3.56V16zm3.93 3.97c-.7-.9-1.5-2.3-2.03-3.97h4.06c-.53 1.67-1.33 3.07-2.03 3.97M15.93 14h3.81a8.1 8.1 0 0 1 0-4h-3.64c.09.65.14 1.32.14 2s-.05 1.35-.14 2m-.65 2h-3.16V16h3.16c-.3 1.25-.76 2.45-1.38 3.56A15.7 15.7 0 0 0 15.28 16"
-            />
-          </svg>
-          <span>Site — Player Contabilidade</span>
+        <img
+            class="link__icon link__icon--mark"
+            src="assets/mark_player.png"
+            alt=""
+            width="56"
+            height="69"
+          />
+          <span>
+            <span class="link__label">Site — Player Contabilidade</span>
+            <span class="link__meta">Planos, simulador tributário e app</span>
+          </span>
+          <svg class="link__arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
         </a>
+
+        <a
+          class="link"
+          style="--i: 4"
+          data-brand="location"
+          href="https://www.google.com/maps/place/Sede+Player+Contabilidade/@-10.3044552,-48.3245408,1109m/data=!3m1!1e3!4m6!3m5!1s0x9324cb1c67945457:0x26dcd23559fe37e!8m2!3d-10.3037758!4d-48.3261666!16s%2Fg%2F11rz8g05k_"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+        <svg class="link__icon" aria-hidden="true"><use href="#i-pin" /></svg>
+          <span>
+            <span class="link__label">Nossa localização</span>
+            <span class="link__meta">Palmas · Tocantins · abrir no Google Maps</span>
+          </span>
+          <svg class="link__arrow" aria-hidden="true"><use href="#i-arrow" /></svg>
+        </a>
+
+        <div class="links__social">
+          <a
+            class="link"
+            style="--i: 5"
+            data-brand="youtube"
+            href="https://www.youtube.com/@playercontabilidade"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg class="link__icon" aria-hidden="true"><use href="#i-youtube" /></svg>
+            <span class="link__label">YouTube</span>
+          </a>
+
+          <a
+            class="link"
+            style="--i: 6"
+            data-brand="spotify"
+            href="https://open.spotify.com/show/033DHcdDzl3xF7WrdSdjYD?si=dc77a074f5a6493a"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg class="link__icon" aria-hidden="true"><use href="#i-spotify" /></svg>
+            <span class="link__label">Spotify</span>
+          </a>
+        </div>
       </nav>
 
-      <!-- <footer class="footer">
-        <img
-          class="footer__logo"
-          src="assets/logo_grupo_player.svg"
-          width="180"
-          height="60"
-          alt="Grupo Player"
-        />
-      </footer> -->
+      <footer class="footer">
+        <p class="footer__note">
+          © <span data-year>2026</span> Grupo Player Contabilidade
+        </p>
+      </footer>
+
     </main>
 
+    <script src="../../shared/js/theme.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -1,282 +1,473 @@
-:root {
-  --bg: #2a2a2a;
-  --text: #ffffff;
-  --accent: #cd9d5d;
-  --accent-soft: #fff098;
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Outfit", "Segoe UI", sans-serif;
-  --radius: 12px;
-  --max: 28rem;
+/* ==========================================================================
+   Player Contabilidade — página de links
+   Direção A: premium por contenção. A lista é editorial — linhas separadas
+   por fio, sem card de vidro e sem elevação. O âmbar é gasto uma única vez,
+   no CTA comercial; no hover ele volta como fio temporário sob a linha.
+   Toda cor vem da camada semântica (css/brand.css). Nenhum hex aqui.
+   ========================================================================== */
+
+/* Self-hosted, subsetadas por scripts/build-fonts.py. Ambas variaveis:
+   o Inter guarda o eixo wght inteiro (o CSS usa 400, 450, 500 e 600) e o
+   Fraunces guarda o eixo opsz, que e o que faz font-optical-sizing: auto
+   ter efeito na assinatura. */
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@font-face {
+  font-family: "Fraunces";
+  src: url("../assets/fonts/fraunces-italic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+@layer components {
+  /* ------------------------------------------------------------------------
+     Fundo — segue o tema. Antes era um gradiente navy fixo cobrindo o
+     viewport inteiro, e era ele que impedia o tema claro de aparecer.
+     ------------------------------------------------------------------------ */
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: var(--font-body);
-  color: var(--text);
-  background: var(--bg);
-  line-height: 1.45;
-  -webkit-font-smoothing: antialiased;
-}
-
-.atmosphere {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-color: var(--bg);
-  background-image: url("../assets/background_branco.png");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  animation: atmosphere-shift 18s ease-in-out infinite alternate;
-}
-
-@keyframes atmosphere-shift {
-  from {
-    transform: scale(1);
-    filter: brightness(1);
+  .backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-backdrop);
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      var(--surface-raised) 0%,
+      var(--surface) 42%,
+      var(--surface-sunken) 100%
+    );
   }
-  to {
-    transform: scale(1.04);
-    filter: brightness(1.06);
+
+  /* Halo sob a marca — luz, não cor: nasce de --surface-raised, então clareia
+     no escuro e adensa no claro sem introduzir âmbar. A Task 9 anima este
+     mesmo seletor (parallax), por isso ele continua sendo elemento próprio. */
+  .backdrop::after {
+    content: "";
+    position: absolute;
+    top: -22vh;
+    left: 50%;
+    width: min(150vw, 52rem);
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    opacity: 0.6;
+    background: radial-gradient(circle, var(--surface-raised) 0%, transparent 62%);
+    filter: blur(60px);
   }
-}
 
-.shell {
-  position: relative;
-  z-index: 1;
-  width: min(100% - 2rem, var(--max));
-  margin: 0 auto;
-  padding: 2.5rem 0 3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
-}
+  /* ------------------------------------------------------------------------
+     Estrutura
+     ------------------------------------------------------------------------ */
 
-.brand {
-  text-align: center;
-  animation: rise 0.7s ease-out both;
-}
+  .shell {
+    position: relative;
+    z-index: var(--z-content);
+    width: min(100% - var(--space-8), var(--measure-shell));
+    margin-inline: auto;
+    min-height: 100dvh;
+    padding-block: clamp(var(--space-4), 3vh, var(--space-12));
+    display: grid;
+    /* "safe" é o ponto: centra enquanto couber e volta a alinhar pelo topo
+       quando não couber, em vez de sangrar conteúdo para fora do viewport. */
+    align-content: safe center;
+    gap: clamp(var(--space-4), 3.2vh, var(--space-10));
+  }
 
-.brand__logo {
-  display: block;
-  width: min(100%, 220px);
-  height: auto;
-  margin: 0 auto 1rem;
-}
+  .sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
 
-@media (min-width: 768px) {
+  /* ------------------------------------------------------------------------
+     Marca
+     ------------------------------------------------------------------------ */
+
+  .brand {
+    display: grid;
+    justify-items: center;
+    gap: clamp(var(--space-2), 2vh, var(--space-6));
+    text-align: center;
+  }
+
+  /* O lockup oficial do site (playercontabilidade.com/img/logo/logo-principal.png,
+     225x75 com alfa). Nao existe SVG publicado — o proprio site renderiza este
+     PNG a 192px, entao a largura aqui fica proxima do nativo de proposito.
+     Entra como background-image, e nao como <img>, por um motivo concreto: o
+     browser so baixa a URL do seletor que realmente se aplica, entao o tema
+     ativo custa um arquivo, nao dois. <picture> baixaria so um tambem, mas
+     obedeceria a prefers-color-scheme e ignoraria o toggle manual.
+     As duas variantes saem de scripts/build-site-logo.py. */
   .brand__logo {
-    width: min(100%, 300px);
-  }
-}
-
-.brand__tagline {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-  font-weight: 600;
-  color: var(--accent-soft);
-  letter-spacing: 0.02em;
-}
-
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  padding: 1.05rem 1.35rem;
-  text-align: center;
-  text-decoration: none;
-  color: #090821;
-  font-weight: 600;
-  font-size: calc(0.95rem + 5px);
-  letter-spacing: 0.015em;
-  background: linear-gradient(105deg, #fff098 0%, #cd9d5d 100%);
-  border: 1px solid rgba(160, 112, 50, 0.35);
-  border-radius: var(--radius);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    inset 0 -1px 0 rgba(120, 80, 30, 0.18),
-    0 6px 18px rgba(0, 0, 0, 0.28);
-  transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease,
-    filter 0.22s ease;
-  animation: rise 0.55s ease-out both;
-  overflow: hidden;
-}
-
-.link::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0) 42%
-  );
-  pointer-events: none;
-}
-
-.link > * {
-  position: relative;
-  z-index: 1;
-}
-
-.link__icon {
-  flex-shrink: 0;
-  width: 1.35rem;
-  height: 1.35rem;
-  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.25));
-}
-
-.link:nth-child(1) .link__icon,
-.link:nth-child(3) .link__icon {
-  color: #25d366; /* WhatsApp */
-}
-
-.link:nth-child(2) .link__icon {
-  color: #090821; /* Vagas */
-}
-
-.link:nth-child(4) .link__icon {
-  color: #ff0000; /* YouTube */
-}
-
-.link:nth-child(5) .link__icon {
-  color: #1db954; /* Spotify */
-}
-
-.link:nth-child(6) .link__icon {
-  color: #090821; /* Site */
-}
-
-.link:nth-child(7) .link__icon {
-  color: #e4405f; /* Instagram / Xdose */
-}
-
-.link:nth-child(8) .link__icon {
-  color: #2563eb; /* Ponto / relógio */
-}
-
-.link:nth-child(9) .link__icon {
-  color: #0ea5e9; /* VCI / sistema */
-}
-
-.link:nth-child(1) {
-  animation-delay: 0.05s;
-}
-.link:nth-child(2) {
-  animation-delay: 0.09s;
-}
-.link:nth-child(3) {
-  animation-delay: 0.13s;
-}
-.link:nth-child(4) {
-  animation-delay: 0.17s;
-}
-.link:nth-child(5) {
-  animation-delay: 0.21s;
-}
-.link:nth-child(6) {
-  animation-delay: 0.25s;
-}
-.link:nth-child(7) {
-  animation-delay: 0.29s;
-}
-.link:nth-child(8) {
-  animation-delay: 0.33s;
-}
-.link:nth-child(9) {
-  animation-delay: 0.37s;
-}
-
-.link:hover,
-.link:focus-visible {
-  transform: translateY(-3px);
-  filter: brightness(1.05);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -1px 0 rgba(120, 80, 30, 0.15),
-    0 12px 28px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(255, 240, 152, 0.25);
-  outline: none;
-}
-
-.link:focus-visible {
-  border-color: var(--accent-soft);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 0 0 2px #1a1a1a,
-    0 0 0 4px var(--accent),
-    0 12px 28px rgba(0, 0, 0, 0.32);
-}
-
-.link:active {
-  transform: translateY(0);
-  filter: brightness(0.98);
-  box-shadow:
-    inset 0 2px 4px rgba(120, 80, 30, 0.25),
-    0 3px 10px rgba(0, 0, 0, 0.22);
-}
-
-.link.is-pressed {
-  transform: scale(0.985);
-}
-
-.footer {
-  text-align: center;
-  animation: rise 0.6s ease-out 0.45s both;
-}
-
-.footer__logo {
-  display: block;
-  width: min(100%, 140px);
-  height: auto;
-  margin: 0.5rem auto 0;
-  opacity: 0.9;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .atmosphere,
-  .brand,
-  .link,
-  .footer {
-    animation: none;
+    width: min(62%, 200px);
+    aspect-ratio: 225 / 75;
+    background-image: url("../assets/logo_player_on_dark.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
   }
 
-  .link:hover,
+  [data-theme="light"] .brand__logo {
+    background-image: url("../assets/logo_player_on_light.png");
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .brand__logo {
+      background-image: url("../assets/logo_player_on_light.png");
+    }
+  }
+
+  /* A assinatura do site institucional — única linha serifada da página.
+     Peso sólido, sem gradiente e sem shimmer: na direção A ela é forte pela
+     forma, e o âmbar fica reservado ao CTA. */
+  .brand__eyebrow {
+    margin: 0;
+    max-width: 26ch;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--track-tight);
+    line-height: var(--leading-tight);
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  /* ------------------------------------------------------------------------
+     Links
+     ------------------------------------------------------------------------ */
+
+  .links {
+    display: grid;
+    border-top: 1px solid var(--rule);
+  }
+
+  .link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: var(--tap-min);
+    padding-block: clamp(var(--space-2), 1.6vh, var(--space-4));
+    border-bottom: 1px solid var(--rule);
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .link__label {
+    display: block;
+    font-size: var(--text-md);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--track-snug);
+    line-height: var(--leading-snug);
+    text-wrap: pretty;
+  }
+
+  .link__meta {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-book);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  .link__arrow {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--text-faint);
+  }
+
+  /* O único elemento âmbar preenchido da página. */
+  .link--cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 0;
+    border-radius: var(--radius-sm);
+    background: var(--accent-surface);
+    color: var(--on-accent);
+    font-weight: var(--weight-semibold);
+  }
+
+  .link--cta .link__arrow {
+    color: var(--on-accent);
+  }
+
+  /* YouTube e Spotify mantêm ícone: é onde ele carrega reconhecimento de marca. */
+  .links__social {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-top: clamp(var(--space-3), 2vh, var(--space-6));
+  }
+
+  .links__social .link {
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+  }
+
+  .link__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: none;
+    color: var(--text-muted);
+  }
+
+  /* O simbolo da marca e arte de bitmap com alfa: nao herda currentColor e
+     nao deve — o dourado dele e a identidade. So a altura e normalizada. */
+  .link__icon--mark {
+    width: auto;
+    height: 1.35rem;
+  }
+
+  /* O CTA precisa que o glifo ande junto do rotulo, e nao nas pontas do flex. */
+  .link__lead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .link--cta .link__icon {
+    color: var(--on-accent);
+  }
+
+  .links__social .link__icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  .links__social .link__label {
+    font-size: var(--text-base);
+  }
+
+  /* Cor de plataforma vem do atributo, nunca da posição. */
+  .links > [data-brand="whatsapp"] .link__icon {
+    color: var(--brand-whatsapp);
+  }
+
+  /* O badge e arte de marca: o verde entra pelo currentColor (token), e o
+     branco do glifo fica literal porque e parte do desenho, nao do tema.
+     Um pouco maior que os glifos chapados — massa preenchida pesa mais que
+     traco, entao precisa de area para ler no mesmo tamanho optico. */
+  .links > [data-brand="whatsapp-badge"] .link__icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--brand-whatsapp);
+  }
+
+  [data-brand="youtube"] .link__icon {
+    color: var(--brand-youtube);
+  }
+
+  [data-brand="spotify"] .link__icon {
+    color: var(--brand-spotify);
+  }
+
+  /* ------------------------------------------------------------------------
+     Hover — deslocamento e revelação, não elevação
+     ------------------------------------------------------------------------ */
+
+  @media (hover: hover) {
+    /* O fio inferior da linha vira a superfície animada: cresce da esquerda. */
+    .links > .link {
+      background-image: linear-gradient(var(--accent-surface), var(--accent-surface));
+      background-repeat: no-repeat;
+      background-position: 0 100%;
+      background-size: 0% 1px;
+      transition:
+        background-size var(--dur-base) var(--ease-exit),
+        padding-inline-start var(--dur-base) var(--ease-exit);
+    }
+
+    .links > .link:hover {
+      background-size: 100% 1px;
+      padding-inline-start: var(--space-3);
+    }
+
+    .links > .link:hover .link__label {
+      color: var(--accent-text);
+    }
+
+    .link__arrow {
+      transition:
+        transform var(--dur-base) var(--ease-exit),
+        color var(--dur-base) var(--ease-exit);
+    }
+
+    .links > .link:hover .link__arrow {
+      color: var(--accent-text);
+      transform: translateX(var(--space-2));
+    }
+
+    .links__social .link {
+      transition:
+        border-color var(--dur-fast) var(--ease-soft),
+        color var(--dur-fast) var(--ease-soft);
+    }
+
+    .links__social .link:hover {
+      border-color: var(--rule-strong);
+    }
+
+    .link--cta {
+      transition:
+        filter var(--dur-fast) var(--ease-soft),
+        transform var(--dur-fast) var(--ease-soft);
+    }
+
+    .link--cta:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+  }
+
   .link:focus-visible {
-    transform: none;
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  .link:active {
+    transform: translateY(0) scale(0.995);
+  }
+
+  /* ------------------------------------------------------------------------
+     Rodapé
+     ------------------------------------------------------------------------ */
+
+  .footer {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  .footer::before {
+    content: "";
+    width: 3.5rem;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .footer__note {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     Alternador de tema
+     ------------------------------------------------------------------------ */
+
+  /* Fora do fluxo, ancorado no topo direito do shell. Como linha do grid ele
+     custava 44px de altura mais 40px de gap — 84px que sozinhos já estouravam
+     o viewport. Absoluto, ele fica no mesmo canto sem ocupar altura nenhuma.
+     Sem borda e sem círculo desenhado: a superfície só aparece no hover. */
+  .theme-toggle {
+    position: absolute;
+    top: clamp(var(--space-2), 2vh, var(--space-5));
+    right: 0;
+    display: grid;
+    place-items: center;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition:
+      color var(--dur-fast) var(--ease-soft),
+      background-color var(--dur-fast) var(--ease-soft);
+  }
+
+  .theme-toggle:hover {
+    color: var(--text);
+    background: var(--surface-raised);
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .theme-toggle__icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  /* O ícone mostra o destino da troca, não o estado atual: no escuro
+     oferece o sol, no claro oferece a lua. */
+  .theme-toggle__icon--moon {
+    display: none;
+  }
+
+  [data-theme="light"] .theme-toggle__icon--sun {
+    display: none;
+  }
+
+  [data-theme="light"] .theme-toggle__icon--moon {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .theme-toggle__icon--sun {
+      display: none;
+    }
+
+    :root:not([data-theme="dark"]) .theme-toggle__icon--moon {
+      display: block;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .brand__logo {
+      width: min(70%, 260px);
+    }
+  }
+}
+
+/* ==========================================================================
+   Movimento — entrada. A Task 9 assume esta camada e acrescenta os reveals.
+   ========================================================================== */
+
+@layer motion {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .brand {
+      animation: rise var(--dur-slow) var(--ease-exit) both;
+    }
+
+    .link,
+    .footer {
+      animation: rise var(--dur-base) var(--ease-exit) both;
+      animation-delay: calc(var(--i, 0) * var(--stagger-step) + var(--stagger-base));
+    }
   }
 }
